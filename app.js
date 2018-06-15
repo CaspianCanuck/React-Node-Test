@@ -1,24 +1,23 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Hello = /** @class */ (function (_super) {
-    __extends(Hello, _super);
-    function Hello() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Hello.prototype.render = function () {
-        return (React.createElement("h1", null, "Welcome to React!!"));
-    };
-    return Hello;
-}(React.Component));
-ReactDOM.render(React.createElement(Hello, null), document.getElementById('root'));
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
+var react_dom_1 = require("react-dom");
+var file_upload_1 = require("./components/file-upload");
+//class Hello extends React.Component {
+//    render() {
+//        return (
+//            <h1>Welcome to React!!</h1>
+//        );
+//    }
+//}
+react_dom_1.render(React.createElement(file_upload_1.default, null), document.getElementById('root'));
+//Dropzone.defaultProps = {
+//    preventDropOnDocument: true,
+//    disabled: false,
+//    disablePreview: false,
+//    disableClick: false,
+//    multiple: true,
+//    maxSize: Infinity,
+//    minSize: 0
+//}
 //# sourceMappingURL=app.js.map

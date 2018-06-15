@@ -2,6 +2,7 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "module": "commonjs",
+    "moduleResolution": "node",
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
@@ -10,8 +11,5 @@
   },
   "exclude": [
     "node_modules"
-  ],
-  "files": [
-    "app.tsx"
   ]
 }

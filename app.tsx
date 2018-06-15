@@ -1,14 +1,23 @@
-﻿declare var require: any
+﻿import * as React from "react";
+import { render } from "react-dom";
+import FileUpload from "./components/file-upload";
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+//class Hello extends React.Component {
+//    render() {
+//        return (
+//            <h1>Welcome to React!!</h1>
+//        );
+//    }
+//}
 
-class Hello extends React.Component {
-    render() {
-        return (
-            <h1>Welcome to React!!</h1>
-        );
-    }
-}
+render(<FileUpload />, document.getElementById('root'))
 
-ReactDOM.render(<Hello />, document.getElementById('root'))
+//Dropzone.defaultProps = {
+//    preventDropOnDocument: true,
+//    disabled: false,
+//    disablePreview: false,
+//    disableClick: false,
+//    multiple: true,
+//    maxSize: Infinity,
+//    minSize: 0
+//}
