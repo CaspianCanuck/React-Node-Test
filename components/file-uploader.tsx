@@ -24,7 +24,7 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
         this.onUploadError = this.onUploadError.bind(this);
         this.onUploadSuccess = this.onUploadSuccess.bind(this);
         this.onFileAdded = this.onFileAdded.bind(this);
-        this.onFilesAdded = this.onFilesAdded.bind(this);
+        this.onFileRemoved = this.onFileRemoved.bind(this);
     }
 
     //#region Helper methods
@@ -51,7 +51,7 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
         this.setState(oldState => ({ status: newStatus }));
     }
     showControls() {
-        return this.dropzone !== null;
+        return this.dropzone !== null && this.state.status !== FileUploadStatus.AwaitingFiles;
     }
     //#endregion
 
@@ -64,7 +64,7 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
     onFileAdded() {
         this.updateStatus();
     }
-    onFilesAdded() {
+    onFileRemoved() {
         this.updateStatus();
     }
 
@@ -126,7 +126,8 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
         const eventHandlers: DropzoneComponentHandlers = {
             init: this.onInit,
             addedfile: this.onFileAdded,
-            addedfiles: this.onFilesAdded,
+            addedfiles: this.onFileAdded,
+            removedfile: this.onFileRemoved,
             error: this.onUploadError,
             success: this.onUploadSuccess,
         };

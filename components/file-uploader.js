@@ -30,7 +30,7 @@ var FileUploader = /** @class */ (function (_super) {
         _this.onUploadError = _this.onUploadError.bind(_this);
         _this.onUploadSuccess = _this.onUploadSuccess.bind(_this);
         _this.onFileAdded = _this.onFileAdded.bind(_this);
-        _this.onFilesAdded = _this.onFilesAdded.bind(_this);
+        _this.onFileRemoved = _this.onFileRemoved.bind(_this);
         return _this;
     }
     //#region Helper methods
@@ -56,7 +56,7 @@ var FileUploader = /** @class */ (function (_super) {
         this.setState(function (oldState) { return ({ status: newStatus }); });
     };
     FileUploader.prototype.showControls = function () {
-        return this.dropzone !== null;
+        return this.dropzone !== null && this.state.status !== types_1.FileUploadStatus.AwaitingFiles;
     };
     //#endregion
     //#region Event handlers
@@ -66,7 +66,7 @@ var FileUploader = /** @class */ (function (_super) {
     FileUploader.prototype.onFileAdded = function () {
         this.updateStatus();
     };
-    FileUploader.prototype.onFilesAdded = function () {
+    FileUploader.prototype.onFileRemoved = function () {
         this.updateStatus();
     };
     FileUploader.prototype.onCustodianNameEntered = function (e) {
@@ -124,7 +124,8 @@ var FileUploader = /** @class */ (function (_super) {
         var eventHandlers = {
             init: this.onInit,
             addedfile: this.onFileAdded,
-            addedfiles: this.onFilesAdded,
+            addedfiles: this.onFileAdded,
+            removedfile: this.onFileRemoved,
             error: this.onUploadError,
             success: this.onUploadSuccess,
         };
