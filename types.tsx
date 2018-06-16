@@ -4,11 +4,20 @@
 export enum FileUploadStatus {
     AwaitingInput,
     ReadyToUpload,
-    Uploading,
-    Finished
+    Uploading
 }
 
+/**
+ * Internal state of individual uploader components.
+ */
 export class FileUploaderState {
+    custodian: string;
+    status: FileUploadStatus;
+
+    constructor() {
+        this.status = FileUploadStatus.AwaitingInput;
+        this.custodian = "";
+    }
 }
 
 /** 
@@ -16,13 +25,8 @@ export class FileUploaderState {
  */
 export class FileUploaderProps {
     id: string;
-    files: string[];
-    custodian: string;
-    progress: number;
-    status: FileUploadStatus;
 
     constructor(index: number = 0) {
-        this.files = [];
         this.id = `file-upload-${index + 1}`;
     }
 }

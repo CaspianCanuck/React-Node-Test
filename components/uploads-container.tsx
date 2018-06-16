@@ -31,14 +31,7 @@ export default class UploadsContainer extends React.Component<{}, UploadsState> 
                 <h1>Upload your files individually or in batches</h1>
                 {
                     this.state.uploads.map((upload) => (
-                        <FileUploader
-                            id={upload.id}
-                            key={upload.id}
-                            files={upload.files}
-                            custodian={upload.custodian}
-                            progress={upload.progress}
-                            status={upload.status}
-                        />
+                        <FileUploader id={upload.id} key={upload.id} />
                     ))
                 }
                 <button id="upload-more-button" onClick={this.onMoreClicked}>

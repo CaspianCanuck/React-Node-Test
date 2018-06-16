@@ -5,11 +5,16 @@
   border: 1px solid grey;
 }
 
-  .file-upload-panel label, .file-upload-panel button {
-    margin: 20px 20px 0 0;
+  .file-upload-panel .controls {
+    margin-top: 20px;
   }
+    .file-upload-panel .controls input,
+    .file-upload-panel .controls button {
+      margin: 0 20px 0 10px;
+    }
 
   /* Overrides for default Dropzone styles */
+
   .file-upload-panel .dropzone {
     border: none;
     background-color: #eee;
@@ -19,10 +24,11 @@
     background: #aaa;
   }
 
-  .file-upload-panel .dropzone .dz-preview, .dropzone .dz-preview .dz-image {
+  .file-upload-panel .dropzone .dz-preview,
+  .file-upload-panel .dropzone .dz-preview .dz-image {
     width: 200px;
   }
 
-    .file-upload-panel .dropzone .dz-preview .dz-progress {
-      margin-top: -15px;
-    }
+  .file-upload-panel .dropzone .dz-preview .dz-progress {
+    margin-top: -23px;
+  }

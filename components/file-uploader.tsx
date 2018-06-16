@@ -3,36 +3,126 @@ import { render } from "react-dom";
 import * as Dropzone from "dropzone";
 import { DropzoneComponent, DropzoneComponentConfig, DropzoneComponentHandlers } from "react-dropzone-component";
 import { FileUploadStatus, FileUploaderProps, FileUploaderState } from "../types";
+import { debug } from "util";
 
 /**
  * Component responsible for rendering a single Dropzone panel.
  * @param props
  */
 export default class FileUploader extends React.Component<FileUploaderProps, FileUploaderState> {
+
+    dropzone: Dropzone; // instance of the Dropzone JS object
+
     constructor(props: FileUploaderProps) {
         super(props);
         this.state = new FileUploaderState();
+
+        // Bind all event handlers to the component's instance.
+        this.onInit = this.onInit.bind(this);
+        this.onUploadButtonClicked = this.onUploadButtonClicked.bind(this);
+        this.onCustodianNameEntered = this.onCustodianNameEntered.bind(this);
+        this.onUploadError = this.onUploadError.bind(this);
+        this.onUploadSuccess = this.onUploadSuccess.bind(this);
+        this.onFileAdded = this.onFileAdded.bind(this);
+        this.onFilesAdded = this.onFilesAdded.bind(this);
     }
 
-    onFileAdded(file) {
-        this.props.files.push(file);
+    //#region Helper methods
+
+    hasFilesInQueue() {
+        return this.dropzone.getQueuedFiles().length > 0;
     }
-    onFilesAdded(files) {
-        //this.props.files = this.props.files.concat(files);
+    hasFilesInTransit() {
+        return this.dropzone.getUploadingFiles().length > 0;
     }
+    hasCustodianName() {
+        return this.state.custodian.trim().length > 0;
+    }
+    updateStatus(newStatus?: FileUploadStatus) {
+        if (!newStatus)
+            newStatus = this.hasFilesInQueue() && this.hasCustodianName() ? FileUploadStatus.ReadyToUpload : FileUploadStatus.AwaitingInput;
+        this.setState(oldState => ({ status: newStatus }));
+    }
+    //#endregion
+
+    //#region Event handlers
+
+    onInit(dz: Dropzone) {
+        this.dropzone = dz; // save a reference to the Dropzone JS component so we can call its methods
+    }
+
+    onFileAdded() {
+        this.updateStatus();
+    }
+
+    onFilesAdded() {
+        this.updateStatus();
+    }
+
+    onCustodianNameEntered(e) {
+        if (e.target.value) {
+            this.setState({ custodian: e.target.value });
+            this.updateStatus();
+        }
+    }
+
+    onUploadButtonClicked(e) {
+        // Make sure to initiate uploads only when we're ready.
+        switch (this.state.status) {
+            case FileUploadStatus.ReadyToUpload:
+                this.updateStatus(FileUploadStatus.Uploading);
+                this.dropzone.processQueue();
+                break;
+            case FileUploadStatus.AwaitingInput:
+                const hasCustodianName = this.hasCustodianName();
+                const hasPendingFiles = this.hasFilesInQueue();
+                if (!hasCustodianName && !hasPendingFiles)
+                    alert("Please add some files and enter the Custodian's name.");
+                else if (!hasPendingFiles)
+                    alert("Please add some files to upload.");
+                else
+                    alert("Please enter the Custodian's name.");
+                break;
+            case FileUploadStatus.Uploading:
+                alert("Please wait for the uploads to finish before uploading more files.");
+                break;
+        }
+    }
+
+    onUploadError() {
+        this.updateStatus();
+        alert("One or more files failed to upload, please try again.");
+    }
+
+    onUploadSuccess() {
+        if (this.hasFilesInQueue())
+            this.dropzone.processQueue();
+        else if (!this.hasFilesInTransit()) {
+            this.updateStatus(FileUploadStatus.AwaitingInput);
+            alert(`File(s) successfully uploaded.`);
+        }
+    }
+    //#endregion
 
     render() {
         const componentConfig: DropzoneComponentConfig = {
-            postUrl: 'no-url',
+            postUrl: '/upload',
             showFiletypeIcon: true
         };
         const jsConfig: Dropzone.DropzoneOptions = {
-            addRemoveLinks: false,
+            dictDefaultMessage: "Drag and drop files here or click anywhere inside this area to select files from your hard drive",
+            addRemoveLinks: true,
             autoProcessQueue: false,
-            dictDefaultMessage: "Drag and drop files here or click anywhere inside this area to select files from your hard drive"
+            chunking: true,
+            chunkSize: 2048, // files will be sent in 2Kb chunks
+            parallelChunkUploads: false
         };
         const eventHandlers: DropzoneComponentHandlers = {
-            addedfile: this.onFileAdded.bind(this)
+            init: this.onInit,
+            addedfile: this.onFileAdded,
+            addedfiles: this.onFilesAdded,
+            error: this.onUploadError,
+            success: this.onUploadSuccess,
         };
         return (
             <div className="file-upload-panel">
@@ -41,8 +131,16 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
                     djsConfig={jsConfig}
                     eventHandlers={eventHandlers}
                 />
-                <label>Custodian: <input type="text" name="custodian" value={this.props.custodian} /></label>
-                <button>Begin Upload</button>
+                <div className="controls">
+                    <label>
+                        Custodian:
+                        <input type="text" name="custodianName"
+                            value={this.state.custodian}
+                            onChange={this.onCustodianNameEntered}
+                        />
+                    </label>
+                    <button onClick={this.onUploadButtonClicked}>Begin Upload</button>
+                </div>
             </div>
         );
     }

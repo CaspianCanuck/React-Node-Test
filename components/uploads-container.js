@@ -35,7 +35,7 @@ var UploadsContainer = /** @class */ (function (_super) {
     UploadsContainer.prototype.render = function () {
         return (React.createElement("section", { id: "uploads-container" },
             React.createElement("h1", null, "Upload your files individually or in batches"),
-            this.state.uploads.map(function (upload) { return (React.createElement(file_uploader_1.default, { id: upload.id, key: upload.id, files: upload.files, custodian: upload.custodian, progress: upload.progress, status: upload.status })); }),
+            this.state.uploads.map(function (upload) { return (React.createElement(file_uploader_1.default, { id: upload.id, key: upload.id })); }),
             React.createElement("button", { id: "upload-more-button", onClick: this.onMoreClicked }, "Upload More Files")));
     };
     return UploadsContainer;

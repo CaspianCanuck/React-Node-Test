@@ -8,10 +8,14 @@ var FileUploadStatus;
     FileUploadStatus[FileUploadStatus["AwaitingInput"] = 0] = "AwaitingInput";
     FileUploadStatus[FileUploadStatus["ReadyToUpload"] = 1] = "ReadyToUpload";
     FileUploadStatus[FileUploadStatus["Uploading"] = 2] = "Uploading";
-    FileUploadStatus[FileUploadStatus["Finished"] = 3] = "Finished";
 })(FileUploadStatus = exports.FileUploadStatus || (exports.FileUploadStatus = {}));
+/**
+ * Internal state of individual uploader components.
+ */
 var FileUploaderState = /** @class */ (function () {
     function FileUploaderState() {
+        this.status = FileUploadStatus.AwaitingInput;
+        this.custodian = "";
     }
     return FileUploaderState;
 }());
@@ -22,7 +26,6 @@ exports.FileUploaderState = FileUploaderState;
 var FileUploaderProps = /** @class */ (function () {
     function FileUploaderProps(index) {
         if (index === void 0) { index = 0; }
-        this.files = [];
         this.id = "file-upload-" + (index + 1);
     }
     return FileUploaderProps;

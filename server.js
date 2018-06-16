@@ -4,6 +4,12 @@ var express = require('express');
 
 var app = express();
 
+app.post("/upload", function (req, res) {
+    // This function handles the upload of individual file chunks.
+    console.log("file chunk uploaded");
+    res.end('success');
+});
+
 var staticPath = path.join(__dirname, '/');
 app.use(express.static(staticPath));
 
