@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var types_1 = require("../types");
 /**
  * Component responsible for rendering a single Dropzone panel.
  * @param props
@@ -18,10 +19,22 @@ var React = require("react");
 var FileUploader = /** @class */ (function (_super) {
     __extends(FileUploader, _super);
     function FileUploader(props) {
-        return _super.call(this, props) || this;
+        var _this = _super.call(this, props) || this;
+        _this.state = new types_1.FileUploaderState();
+        return _this;
     }
+    //componentDidMount() {
+    //    const { preventDropOnDocument } = this.props
+    //    this.dragTargets = []
+    //    if (preventDropOnDocument) {
+    //        document.addEventListener('dragover', onDocumentDragOver, false)
+    //        document.addEventListener('drop', this.onDocumentDrop, false)
+    //    }
+    //    this.fileInputEl.addEventListener('click', this.onInputElementClick, false)
+    //    window.addEventListener('focus', this.onFileDialogCancel, false)
+    //}
     FileUploader.prototype.render = function () {
-        return (React.createElement("form", { action: "/file-upload", className: "dropzone" },
+        return (React.createElement("form", { action: "/file-upload", className: "dropzone", id: types_1.FileUploaderProps.id(this.props) },
             React.createElement("div", { className: "progress" }, "Drag and drop your files here or use the button below to select them."),
             React.createElement("div", { className: "fallback" },
                 React.createElement("input", { name: "file", type: "file", multiple: true }))));

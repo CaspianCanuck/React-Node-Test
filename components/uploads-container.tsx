@@ -32,6 +32,7 @@ export default class UploadsContainer extends React.Component<{}, UploadsState> 
                 {
                     this.state.uploads.map((upload) => (
                         <FileUploader
+                            index={upload.index}
                             key={upload.key}
                             files={upload.files}
                             custodian={upload.custodian}

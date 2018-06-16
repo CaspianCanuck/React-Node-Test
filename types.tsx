@@ -8,21 +8,14 @@ export enum FileUploadStatus {
     Finished
 }
 
-///** 
-// * Describes the signature of props passed to each uploader component.
-// */
-//export interface IFileUploaderProps {
-//    key: string;
-//    files: string[];
-//    custodian: string;
-//    progress: number;
-//    status: FileUploadStatus;
-//}
+export class FileUploaderState {
+}
 
 /** 
  * Props object passed to each uploader component.
  */
-export class FileUploaderProps {// implements IFileUploaderProps {
+export class FileUploaderProps {
+    index: number;
     key: string;
     files: string[];
     custodian: string;
@@ -30,22 +23,20 @@ export class FileUploaderProps {// implements IFileUploaderProps {
     status: FileUploadStatus;
 
     constructor(index: number = 0) {
-        this.key = `file-upload-${index}`;
+        this.index = index;
         this.files = [];
+        this.key = FileUploaderProps.id(this);
+    }
+
+    static id(props: FileUploaderProps) {
+        return `file-upload-${props.index + 1}`;
     }
 }
-
-///** 
-// * Describes the signature of the UI state maintained by the top-level component.
-// */
-//export interface IUploadsState {
-//    uploads: IFileUploaderProps[];
-//}
 
 /**
  * UI state object maintained by the top-level component.
  */
-export class UploadsState { //implements IUploadsState {
+export class UploadsState { 
     uploads: FileUploaderProps[];
 
     constructor() {
