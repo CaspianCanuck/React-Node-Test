@@ -23,10 +23,5 @@
   },
   "scripts": {
     "build-js": "node_modules\\.bin\\webpack --config webpack.config.js"
-  },
-  "-vs-binding": {
-    "BeforeBuild": [
-      "build-js"
-    ]
   }
 }

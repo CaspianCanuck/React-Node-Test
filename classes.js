@@ -11,7 +11,6 @@ var FileUploaderProps = /** @class */ (function () {
     function FileUploaderProps(index) {
         if (index === void 0) { index = 0; }
         this.id = "file-upload-" + index;
-        this.index = index;
         this.files = [];
     }
     return FileUploaderProps;

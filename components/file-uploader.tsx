@@ -3,7 +3,7 @@ import { render } from "react-dom";
 import { FileUploadStatus, IFileUploaderProps } from "../classes";
 
 export const FileUploader: React.StatelessComponent<IFileUploaderProps> = (props) =>
-    <form action="/file-upload" className="dropzone" key={props.id} >
+    <form action="/file-upload" className="dropzone" id={props.id}>
         <div className="progress">
             Drag and drop your files here or use the button below to select them.
         </div>

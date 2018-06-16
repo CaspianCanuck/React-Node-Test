@@ -7,7 +7,6 @@ export enum FileUploadStatus {
 
 export interface IFileUploaderProps {
     id: string;
-    index: number;
     files: string[];
     custodian: string;
     progress: number;
@@ -16,7 +15,6 @@ export interface IFileUploaderProps {
 
 export class FileUploaderProps implements IFileUploaderProps {
     id: string;
-    index: number;
     files: string[];
     custodian: string;
     progress: number;
@@ -24,7 +22,6 @@ export class FileUploaderProps implements IFileUploaderProps {
 
     constructor(index: number = 0) {
         this.id = `file-upload-${index}`;
-        this.index = index;
         this.files = [];
     }
 }
@@ -40,3 +37,4 @@ export class UploadsState implements IUploadsState {
         this.uploads = [];
     }
 }
+
