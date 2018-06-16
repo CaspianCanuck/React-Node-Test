@@ -5,16 +5,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 var FileUploadStatus;
 (function (FileUploadStatus) {
-    FileUploadStatus[FileUploadStatus["AwaitingInput"] = 0] = "AwaitingInput";
-    FileUploadStatus[FileUploadStatus["ReadyToUpload"] = 1] = "ReadyToUpload";
-    FileUploadStatus[FileUploadStatus["Uploading"] = 2] = "Uploading";
+    FileUploadStatus[FileUploadStatus["AwaitingFiles"] = 0] = "AwaitingFiles";
+    FileUploadStatus[FileUploadStatus["AwaitingInput"] = 1] = "AwaitingInput";
+    FileUploadStatus[FileUploadStatus["ReadyToUpload"] = 2] = "ReadyToUpload";
+    FileUploadStatus[FileUploadStatus["Uploading"] = 3] = "Uploading";
 })(FileUploadStatus = exports.FileUploadStatus || (exports.FileUploadStatus = {}));
 /**
  * Internal state of individual uploader components.
  */
 var FileUploaderState = /** @class */ (function () {
     function FileUploaderState() {
-        this.status = FileUploadStatus.AwaitingInput;
+        this.status = FileUploadStatus.AwaitingFiles;
         this.custodian = "";
     }
     return FileUploaderState;

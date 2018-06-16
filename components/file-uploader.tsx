@@ -11,7 +11,7 @@ import { debug } from "util";
  */
 export default class FileUploader extends React.Component<FileUploaderProps, FileUploaderState> {
 
-    dropzone: Dropzone; // instance of the Dropzone JS object
+    dropzone: Dropzone = null; // instance of the Dropzone JS object
 
     constructor(props: FileUploaderProps) {
         super(props);
@@ -28,7 +28,7 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
     }
 
     //#region Helper methods
-
+    
     hasFilesInQueue() {
         return this.dropzone.getQueuedFiles().length > 0;
     }
@@ -39,22 +39,31 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
         return this.state.custodian.trim().length > 0;
     }
     updateStatus(newStatus?: FileUploadStatus) {
-        if (!newStatus)
-            newStatus = this.hasFilesInQueue() && this.hasCustodianName() ? FileUploadStatus.ReadyToUpload : FileUploadStatus.AwaitingInput;
+        if (!newStatus) {
+            // Intelligently set the status based on the circumstances.
+            if (this.hasFilesInQueue() && this.hasCustodianName())
+                newStatus = FileUploadStatus.ReadyToUpload;
+            else if (this.hasFilesInQueue())
+                newStatus = FileUploadStatus.AwaitingInput;
+            else
+                newStatus = FileUploadStatus.AwaitingFiles;
+        }
         this.setState(oldState => ({ status: newStatus }));
+    }
+    showControls() {
+        return this.dropzone !== null;
     }
     //#endregion
 
     //#region Event handlers
 
     onInit(dz: Dropzone) {
-        this.dropzone = dz; // save a reference to the Dropzone JS component so we can call its methods
+        this.dropzone = dz; // save a reference to the Dropzone JS component so we can call its methods later
     }
 
     onFileAdded() {
         this.updateStatus();
     }
-
     onFilesAdded() {
         this.updateStatus();
     }
@@ -74,17 +83,14 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
                 this.dropzone.processQueue();
                 break;
             case FileUploadStatus.AwaitingInput:
-                const hasCustodianName = this.hasCustodianName();
-                const hasPendingFiles = this.hasFilesInQueue();
-                if (!hasCustodianName && !hasPendingFiles)
-                    alert("Please add some files and enter the Custodian's name.");
-                else if (!hasPendingFiles)
-                    alert("Please add some files to upload.");
-                else
-                    alert("Please enter the Custodian's name.");
+                alert("Please enter the Custodian's name.");
                 break;
             case FileUploadStatus.Uploading:
                 alert("Please wait for the uploads to finish before uploading more files.");
+                break;
+            default:
+                // Sanity check (we should never land here unless there's a bug).
+                alert("Please add some files to upload.");
                 break;
         }
     }
@@ -93,13 +99,13 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
         this.updateStatus();
         alert("One or more files failed to upload, please try again.");
     }
-
     onUploadSuccess() {
+        // Kick off the next upload after the previous one succeeds and at the end
+        // reset the status once all files have been uploaded.
         if (this.hasFilesInQueue())
             this.dropzone.processQueue();
         else if (!this.hasFilesInTransit()) {
-            this.updateStatus(FileUploadStatus.AwaitingInput);
-            alert(`File(s) successfully uploaded.`);
+            this.updateStatus(FileUploadStatus.AwaitingFiles);
         }
     }
     //#endregion
@@ -124,13 +130,11 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
             error: this.onUploadError,
             success: this.onUploadSuccess,
         };
-        return (
-            <div className="file-upload-panel">
-                <DropzoneComponent
-                    config={componentConfig}
-                    djsConfig={jsConfig}
-                    eventHandlers={eventHandlers}
-                />
+
+        // Conditionally render the controls when files have been added.
+        var controls = null;
+        if (this.showControls()) {
+            controls = (
                 <div className="controls">
                     <label>
                         Custodian:
@@ -141,6 +145,16 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
                     </label>
                     <button onClick={this.onUploadButtonClicked}>Begin Upload</button>
                 </div>
+            );
+        }
+        return (
+            <div className="file-upload-panel">
+                <DropzoneComponent
+                    config={componentConfig}
+                    djsConfig={jsConfig}
+                    eventHandlers={eventHandlers}
+                />
+                {controls}
             </div>
         );
     }

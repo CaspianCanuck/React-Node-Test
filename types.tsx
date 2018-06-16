@@ -2,6 +2,7 @@
  * Describes the statuses in which an uploader component can exist at any given time.
  */
 export enum FileUploadStatus {
+    AwaitingFiles,
     AwaitingInput,
     ReadyToUpload,
     Uploading
@@ -15,7 +16,7 @@ export class FileUploaderState {
     status: FileUploadStatus;
 
     constructor() {
-        this.status = FileUploadStatus.AwaitingInput;
+        this.status = FileUploadStatus.AwaitingFiles;
         this.custodian = "";
     }
 }

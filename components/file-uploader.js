@@ -21,6 +21,7 @@ var FileUploader = /** @class */ (function (_super) {
     __extends(FileUploader, _super);
     function FileUploader(props) {
         var _this = _super.call(this, props) || this;
+        _this.dropzone = null; // instance of the Dropzone JS object
         _this.state = new types_1.FileUploaderState();
         // Bind all event handlers to the component's instance.
         _this.onInit = _this.onInit.bind(_this);
@@ -43,14 +44,24 @@ var FileUploader = /** @class */ (function (_super) {
         return this.state.custodian.trim().length > 0;
     };
     FileUploader.prototype.updateStatus = function (newStatus) {
-        if (!newStatus)
-            newStatus = this.hasFilesInQueue() && this.hasCustodianName() ? types_1.FileUploadStatus.ReadyToUpload : types_1.FileUploadStatus.AwaitingInput;
+        if (!newStatus) {
+            // Intelligently set the status based on the circumstances.
+            if (this.hasFilesInQueue() && this.hasCustodianName())
+                newStatus = types_1.FileUploadStatus.ReadyToUpload;
+            else if (this.hasFilesInQueue())
+                newStatus = types_1.FileUploadStatus.AwaitingInput;
+            else
+                newStatus = types_1.FileUploadStatus.AwaitingFiles;
+        }
         this.setState(function (oldState) { return ({ status: newStatus }); });
+    };
+    FileUploader.prototype.showControls = function () {
+        return this.dropzone !== null;
     };
     //#endregion
     //#region Event handlers
     FileUploader.prototype.onInit = function (dz) {
-        this.dropzone = dz; // save a reference to the Dropzone JS component so we can call its methods
+        this.dropzone = dz; // save a reference to the Dropzone JS component so we can call its methods later
     };
     FileUploader.prototype.onFileAdded = function () {
         this.updateStatus();
@@ -72,17 +83,14 @@ var FileUploader = /** @class */ (function (_super) {
                 this.dropzone.processQueue();
                 break;
             case types_1.FileUploadStatus.AwaitingInput:
-                var hasCustodianName = this.hasCustodianName();
-                var hasPendingFiles = this.hasFilesInQueue();
-                if (!hasCustodianName && !hasPendingFiles)
-                    alert("Please add some files and enter the Custodian's name.");
-                else if (!hasPendingFiles)
-                    alert("Please add some files to upload.");
-                else
-                    alert("Please enter the Custodian's name.");
+                alert("Please enter the Custodian's name.");
                 break;
             case types_1.FileUploadStatus.Uploading:
                 alert("Please wait for the uploads to finish before uploading more files.");
+                break;
+            default:
+                // Sanity check (we should never land here unless there's a bug).
+                alert("Please add some files to upload.");
                 break;
         }
     };
@@ -91,11 +99,12 @@ var FileUploader = /** @class */ (function (_super) {
         alert("One or more files failed to upload, please try again.");
     };
     FileUploader.prototype.onUploadSuccess = function () {
+        // Kick off the next upload after the previous one succeeds and at the end
+        // reset the status once all files have been uploaded.
         if (this.hasFilesInQueue())
             this.dropzone.processQueue();
         else if (!this.hasFilesInTransit()) {
-            this.updateStatus(types_1.FileUploadStatus.AwaitingInput);
-            alert("File(s) successfully uploaded.");
+            this.updateStatus(types_1.FileUploadStatus.AwaitingFiles);
         }
     };
     //#endregion
@@ -119,13 +128,18 @@ var FileUploader = /** @class */ (function (_super) {
             error: this.onUploadError,
             success: this.onUploadSuccess,
         };
-        return (React.createElement("div", { className: "file-upload-panel" },
-            React.createElement(react_dropzone_component_1.DropzoneComponent, { config: componentConfig, djsConfig: jsConfig, eventHandlers: eventHandlers }),
-            React.createElement("div", { className: "controls" },
+        // Conditionally render the controls when files have been added.
+        var controls = null;
+        if (this.showControls()) {
+            controls = (React.createElement("div", { className: "controls" },
                 React.createElement("label", null,
                     "Custodian:",
                     React.createElement("input", { type: "text", name: "custodianName", value: this.state.custodian, onChange: this.onCustodianNameEntered })),
-                React.createElement("button", { onClick: this.onUploadButtonClicked }, "Begin Upload"))));
+                React.createElement("button", { onClick: this.onUploadButtonClicked }, "Begin Upload")));
+        }
+        return (React.createElement("div", { className: "file-upload-panel" },
+            React.createElement(react_dropzone_component_1.DropzoneComponent, { config: componentConfig, djsConfig: jsConfig, eventHandlers: eventHandlers }),
+            controls));
     };
     return FileUploader;
 }(React.Component));
