@@ -10,18 +10,34 @@ var FileUploadStatus;
     FileUploadStatus[FileUploadStatus["Uploading"] = 2] = "Uploading";
     FileUploadStatus[FileUploadStatus["Finished"] = 3] = "Finished";
 })(FileUploadStatus = exports.FileUploadStatus || (exports.FileUploadStatus = {}));
+///** 
+// * Describes the signature of props passed to each uploader component.
+// */
+//export interface IFileUploaderProps {
+//    key: string;
+//    files: string[];
+//    custodian: string;
+//    progress: number;
+//    status: FileUploadStatus;
+//}
 /**
  * Props object passed to each uploader component.
  */
 var FileUploaderProps = /** @class */ (function () {
     function FileUploaderProps(index) {
         if (index === void 0) { index = 0; }
-        this.id = "file-upload-" + index;
+        this.key = "file-upload-" + index;
         this.files = [];
     }
     return FileUploaderProps;
 }());
 exports.FileUploaderProps = FileUploaderProps;
+///** 
+// * Describes the signature of the UI state maintained by the top-level component.
+// */
+//export interface IUploadsState {
+//    uploads: IFileUploaderProps[];
+//}
 /**
  * UI state object maintained by the top-level component.
  */
@@ -32,4 +48,4 @@ var UploadsState = /** @class */ (function () {
     return UploadsState;
 }());
 exports.UploadsState = UploadsState;
-//# sourceMappingURL=classes.js.map
+//# sourceMappingURL=types.js.map

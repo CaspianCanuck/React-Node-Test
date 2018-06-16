@@ -57,7 +57,7 @@
     <TypeScriptCompile Include="app.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="classes.tsx" />
+    <TypeScriptCompile Include="types.tsx" />
     <TypeScriptCompile Include="components\uploads-container.tsx" />
     <TypeScriptCompile Include="components\file-uploader.tsx">
       <SubType>Code</SubType>

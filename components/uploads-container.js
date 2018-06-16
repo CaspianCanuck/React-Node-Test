@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var file_uploader_1 = require("./file-uploader");
-var classes_1 = require("../classes");
+var types_1 = require("../types");
 /**
  * Top-level component responsible for rendering a list of uploaders and handling UI interactions.
  */
@@ -20,7 +20,7 @@ var UploadsContainer = /** @class */ (function (_super) {
     __extends(UploadsContainer, _super);
     function UploadsContainer() {
         var _this = _super.call(this, {}) || this;
-        _this.state = new classes_1.UploadsState();
+        _this.state = new types_1.UploadsState();
         _this.onMoreClicked = _this.onMoreClicked.bind(_this);
         return _this;
     }
@@ -28,14 +28,14 @@ var UploadsContainer = /** @class */ (function (_super) {
         // Add a new uploader component to the list.
         e.preventDefault();
         this.setState(function (prevState) {
-            prevState.uploads.push(new classes_1.FileUploaderProps(prevState.uploads.length));
+            prevState.uploads.push(new types_1.FileUploaderProps(prevState.uploads.length));
             return prevState;
         });
     };
     UploadsContainer.prototype.render = function () {
         return (React.createElement("section", { id: "uploads-container" },
             React.createElement("h1", null, "Upload your files individually or in batches"),
-            this.state.uploads.map(function (upload) { return (React.createElement(file_uploader_1.FileUploader, { key: upload.id, id: upload.id, files: upload.files, custodian: upload.custodian, progress: upload.progress, status: upload.status })); }),
+            this.state.uploads.map(function (upload) { return (React.createElement(file_uploader_1.default, { key: upload.key, files: upload.files, custodian: upload.custodian, progress: upload.progress, status: upload.status })); }),
             React.createElement("button", { id: "upload-more-button", onClick: this.onMoreClicked }, "Upload More Files")));
     };
     return UploadsContainer;

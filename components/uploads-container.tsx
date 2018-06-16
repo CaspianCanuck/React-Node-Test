@@ -1,14 +1,14 @@
 import * as React from "react";
 import { render } from "react-dom";
-import { FileUploader } from "./file-uploader";
-import { FileUploadStatus, IFileUploaderProps, FileUploaderProps, IUploadsState, UploadsState } from "../classes";
+import FileUploader from "./file-uploader";
+import { FileUploadStatus, FileUploaderProps, UploadsState } from "../types";
 
 /**
  * Top-level component responsible for rendering a list of uploaders and handling UI interactions.
  */
-export default class UploadsContainer extends React.Component<{}, IUploadsState> {
+export default class UploadsContainer extends React.Component<{}, UploadsState> {
 
-    state: IUploadsState
+    state: UploadsState
 
     constructor() {
         super({});
@@ -32,8 +32,7 @@ export default class UploadsContainer extends React.Component<{}, IUploadsState>
                 {
                     this.state.uploads.map((upload) => (
                         <FileUploader
-                            key={upload.id}
-                            id={upload.id}
+                            key={upload.key}
                             files={upload.files}
                             custodian={upload.custodian}
                             progress={upload.progress}
