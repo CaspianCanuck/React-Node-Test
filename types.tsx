@@ -15,21 +15,15 @@ export class FileUploaderState {
  * Props object passed to each uploader component.
  */
 export class FileUploaderProps {
-    index: number;
-    key: string;
+    id: string;
     files: string[];
     custodian: string;
     progress: number;
     status: FileUploadStatus;
 
     constructor(index: number = 0) {
-        this.index = index;
         this.files = [];
-        this.key = FileUploaderProps.id(this);
-    }
-
-    static id(props: FileUploaderProps) {
-        return `file-upload-${props.index + 1}`;
+        this.id = `file-upload-${index + 1}`;
     }
 }
 

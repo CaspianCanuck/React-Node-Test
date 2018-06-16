@@ -1,5 +1,7 @@
 ﻿import * as React from "react";
 import { render } from "react-dom";
+import * as Dropzone from "dropzone";
+import { DropzoneComponent, DropzoneComponentConfig, DropzoneComponentHandlers } from "react-dropzone-component";
 import { FileUploadStatus, FileUploaderProps, FileUploaderState } from "../types";
 
 /**
@@ -12,28 +14,36 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
         this.state = new FileUploaderState();
     }
 
-    //componentDidMount() {
-    //    const { preventDropOnDocument } = this.props
-    //    this.dragTargets = []
-
-    //    if (preventDropOnDocument) {
-    //        document.addEventListener('dragover', onDocumentDragOver, false)
-    //        document.addEventListener('drop', this.onDocumentDrop, false)
-    //    }
-    //    this.fileInputEl.addEventListener('click', this.onInputElementClick, false)
-    //    window.addEventListener('focus', this.onFileDialogCancel, false)
-    //}
+    onFileAdded(file) {
+        this.props.files.push(file);
+    }
+    onFilesAdded(files) {
+        //this.props.files = this.props.files.concat(files);
+    }
 
     render() {
+        const componentConfig: DropzoneComponentConfig = {
+            postUrl: 'no-url',
+            showFiletypeIcon: true
+        };
+        const jsConfig: Dropzone.DropzoneOptions = {
+            addRemoveLinks: false,
+            autoProcessQueue: false,
+            dictDefaultMessage: "Drag and drop files here or click anywhere inside this area to select files from your hard drive"
+        };
+        const eventHandlers: DropzoneComponentHandlers = {
+            addedfile: this.onFileAdded.bind(this)
+        };
         return (
-            <form action="/file-upload" className="dropzone" id={FileUploaderProps.id(this.props)}>
-                <div className="progress">
-                    Drag and drop your files here or use the button below to select them.
-                </div>
-                <div className="fallback">
-                    <input name="file" type="file" multiple />
-                </div>
-            </form>
+            <div className="file-upload-panel">
+                <DropzoneComponent
+                    config={componentConfig}
+                    djsConfig={jsConfig}
+                    eventHandlers={eventHandlers}
+                />
+                <label>Custodian: <input type="text" name="custodian" value={this.props.custodian} /></label>
+                <button>Begin Upload</button>
+            </div>
         );
     }
 }

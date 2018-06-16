@@ -22,13 +22,9 @@ exports.FileUploaderState = FileUploaderState;
 var FileUploaderProps = /** @class */ (function () {
     function FileUploaderProps(index) {
         if (index === void 0) { index = 0; }
-        this.index = index;
         this.files = [];
-        this.key = FileUploaderProps.id(this);
+        this.id = "file-upload-" + (index + 1);
     }
-    FileUploaderProps.id = function (props) {
-        return "file-upload-" + (props.index + 1);
-    };
     return FileUploaderProps;
 }());
 exports.FileUploaderProps = FileUploaderProps;

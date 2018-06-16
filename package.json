@@ -9,20 +9,29 @@
   "dependencies": {
     "@types/react": "^16.3.18",
     "@types/react-dom": "^16.0.6",
-    "dropzone": "^5.4.0",
     "express": "4.16.2",
     "path": "0.12.7",
     "react": "^16.4.1",
     "react-dom": "16.4.0",
+    "react-dropzone-component": "^3.2.0",
+    "dropzone": "^5.4.0",
     "ts-loader": "4.0.1",
     "typescript": "2.7.2"
   },
   "devDependencies": {
-    "webpack": "4.1.1",
-    "webpack-cli": "2.0.11"
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.8",
+    "css-loader": "^0.28.11",
+    "style-loader": "^0.21.0"
   },
   "scripts": {
-    "build-js": "node_modules\\.bin\\webpack --config webpack.config.js"
+    "bundle-js": "node_modules\\.bin\\webpack --config webpack.config.js",
+    "copy-styles": "copy node_modules\\dropzone\\dist\\*.css dist"
+  },
+  "-vs-binding": {
+    "AfterBuild": [
+      "bundle-js",
+      "copy-styles"
+    ]
   }
-, "-vs-binding":{"AfterBuild":["build-js"]}
 }

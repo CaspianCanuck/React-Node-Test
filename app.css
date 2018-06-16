@@ -1,0 +1,28 @@
+.file-upload-panel {
+  width: 50%;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid grey;
+}
+
+  .file-upload-panel label, .file-upload-panel button {
+    margin: 20px 20px 0 0;
+  }
+
+  /* Overrides for default Dropzone styles */
+  .file-upload-panel .dropzone {
+    border: none;
+    background-color: #eee;
+  }
+
+  .file-upload-panel .dropzone .dz-preview .dz-image {
+    background: #aaa;
+  }
+
+  .file-upload-panel .dropzone .dz-preview, .dropzone .dz-preview .dz-image {
+    width: 200px;
+  }
+
+    .file-upload-panel .dropzone .dz-preview .dz-progress {
+      margin-top: -15px;
+    }

@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var react_dropzone_component_1 = require("react-dropzone-component");
 var types_1 = require("../types");
 /**
  * Component responsible for rendering a single Dropzone panel.
@@ -23,21 +24,31 @@ var FileUploader = /** @class */ (function (_super) {
         _this.state = new types_1.FileUploaderState();
         return _this;
     }
-    //componentDidMount() {
-    //    const { preventDropOnDocument } = this.props
-    //    this.dragTargets = []
-    //    if (preventDropOnDocument) {
-    //        document.addEventListener('dragover', onDocumentDragOver, false)
-    //        document.addEventListener('drop', this.onDocumentDrop, false)
-    //    }
-    //    this.fileInputEl.addEventListener('click', this.onInputElementClick, false)
-    //    window.addEventListener('focus', this.onFileDialogCancel, false)
-    //}
+    FileUploader.prototype.onFileAdded = function (file) {
+        this.props.files.push(file);
+    };
+    FileUploader.prototype.onFilesAdded = function (files) {
+        //this.props.files = this.props.files.concat(files);
+    };
     FileUploader.prototype.render = function () {
-        return (React.createElement("form", { action: "/file-upload", className: "dropzone", id: types_1.FileUploaderProps.id(this.props) },
-            React.createElement("div", { className: "progress" }, "Drag and drop your files here or use the button below to select them."),
-            React.createElement("div", { className: "fallback" },
-                React.createElement("input", { name: "file", type: "file", multiple: true }))));
+        var componentConfig = {
+            postUrl: 'no-url',
+            showFiletypeIcon: true
+        };
+        var jsConfig = {
+            addRemoveLinks: false,
+            autoProcessQueue: false,
+            dictDefaultMessage: "Drag and drop files here or click anywhere inside this area to select files from your hard drive"
+        };
+        var eventHandlers = {
+            addedfile: this.onFileAdded.bind(this)
+        };
+        return (React.createElement("div", { className: "file-upload-panel" },
+            React.createElement(react_dropzone_component_1.DropzoneComponent, { config: componentConfig, djsConfig: jsConfig, eventHandlers: eventHandlers }),
+            React.createElement("label", null,
+                "Custodian: ",
+                React.createElement("input", { type: "text", name: "custodian", value: this.props.custodian })),
+            React.createElement("button", null, "Begin Upload")));
     };
     return FileUploader;
 }(React.Component));
