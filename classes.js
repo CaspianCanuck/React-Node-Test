@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Describes the statuses in which an uploader component can exist at any given time.
+ */
 var FileUploadStatus;
 (function (FileUploadStatus) {
     FileUploadStatus[FileUploadStatus["AwaitingInput"] = 0] = "AwaitingInput";
@@ -7,6 +10,9 @@ var FileUploadStatus;
     FileUploadStatus[FileUploadStatus["Uploading"] = 2] = "Uploading";
     FileUploadStatus[FileUploadStatus["Finished"] = 3] = "Finished";
 })(FileUploadStatus = exports.FileUploadStatus || (exports.FileUploadStatus = {}));
+/**
+ * Props object passed to each uploader component.
+ */
 var FileUploaderProps = /** @class */ (function () {
     function FileUploaderProps(index) {
         if (index === void 0) { index = 0; }
@@ -16,9 +22,12 @@ var FileUploaderProps = /** @class */ (function () {
     return FileUploaderProps;
 }());
 exports.FileUploaderProps = FileUploaderProps;
+/**
+ * UI state object maintained by the top-level component.
+ */
 var UploadsState = /** @class */ (function () {
     function UploadsState() {
-        this.uploads = [];
+        this.uploads = [new FileUploaderProps()]; // start off with a single uploader
     }
     return UploadsState;
 }());

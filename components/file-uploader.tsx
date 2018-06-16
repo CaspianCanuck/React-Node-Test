@@ -2,6 +2,10 @@
 import { render } from "react-dom";
 import { FileUploadStatus, IFileUploaderProps } from "../classes";
 
+/**
+ * Stateless component responsible for rendering a single Dropzone panel.
+ * @param props
+ */
 export const FileUploader: React.StatelessComponent<IFileUploaderProps> = (props) =>
     <form action="/file-upload" className="dropzone" id={props.id}>
         <div className="progress">

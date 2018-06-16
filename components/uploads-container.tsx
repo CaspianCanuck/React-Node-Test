@@ -3,14 +3,26 @@ import { render } from "react-dom";
 import { FileUploader } from "./file-uploader";
 import { FileUploadStatus, IFileUploaderProps, FileUploaderProps, IUploadsState, UploadsState } from "../classes";
 
-export default class UploadsContainer extends React.Component {
+/**
+ * Top-level component responsible for rendering a list of uploaders and handling UI interactions.
+ */
+export default class UploadsContainer extends React.Component<{}, IUploadsState> {
 
     state: IUploadsState
 
     constructor() {
         super({});
         this.state = new UploadsState();
-        this.state.uploads.push(new FileUploaderProps());
+        this.onMoreClicked = this.onMoreClicked.bind(this);
+    }
+
+    onMoreClicked(e) {
+        // Add a new uploader component to the list.
+        e.preventDefault();
+        this.setState(prevState => {
+            prevState.uploads.push(new FileUploaderProps(prevState.uploads.length));
+            return prevState;
+        });
     }
 
     render() {
@@ -29,6 +41,9 @@ export default class UploadsContainer extends React.Component {
                         />
                     ))
                 }
+                <button id="upload-more-button" onClick={this.onMoreClicked}>
+                    Upload More Files
+                </button>
             </section>
         );
     }
