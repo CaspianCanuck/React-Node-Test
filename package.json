@@ -7,6 +7,8 @@
     "name": "taskerov"
   },
   "dependencies": {
+    "@types/react": "^16.3.18",
+    "@types/react-dom": "^16.0.6",
     "dropzone": "^5.4.0",
     "express": "4.16.2",
     "path": "0.12.7",
@@ -22,5 +24,9 @@
   "scripts": {
     "build-js": "node_modules\\.bin\\webpack --config webpack.config.js"
   },
-  "-vs-binding": { "BeforeBuild": [ "build-js" ] }
+  "-vs-binding": {
+    "BeforeBuild": [
+      "build-js"
+    ]
+  }
 }

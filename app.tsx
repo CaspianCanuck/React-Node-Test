@@ -1,16 +1,8 @@
 ﻿import * as React from "react";
 import { render } from "react-dom";
-import FileUpload from "./components/file-upload";
+import UploadsContainer from "./components/uploads-container";
 
-//class Hello extends React.Component {
-//    render() {
-//        return (
-//            <h1>Welcome to React!!</h1>
-//        );
-//    }
-//}
-
-render(<FileUpload />, document.getElementById('root'))
+render(<UploadsContainer />, document.getElementById('root'))
 
 //Dropzone.defaultProps = {
 //    preventDropOnDocument: true,
