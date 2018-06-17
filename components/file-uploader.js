@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var react_dropzone_component_1 = require("react-dropzone-component");
 var types_1 = require("../types");
+var timers_1 = require("timers");
 /**
  * Component responsible for rendering a single Dropzone panel.
  * @param props
@@ -64,7 +65,8 @@ var FileUploader = /** @class */ (function (_super) {
         this.dropzone = dz; // save a reference to the Dropzone JS component so we can call its methods later
     };
     FileUploader.prototype.onFileAdded = function () {
-        this.updateStatus();
+        var _this = this;
+        timers_1.setTimeout(function () { return _this.updateStatus(); }, 500);
     };
     FileUploader.prototype.onFileRemoved = function () {
         this.updateStatus();

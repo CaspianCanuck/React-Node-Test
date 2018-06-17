@@ -4,6 +4,7 @@ import * as Dropzone from "dropzone";
 import { DropzoneComponent, DropzoneComponentConfig, DropzoneComponentHandlers } from "react-dropzone-component";
 import { FileUploadStatus, FileUploaderProps, FileUploaderState } from "../types";
 import { debug } from "util";
+import { setTimeout } from "timers";
 
 /**
  * Component responsible for rendering a single Dropzone panel.
@@ -62,7 +63,7 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
     }
 
     onFileAdded() {
-        this.updateStatus();
+        setTimeout(() => this.updateStatus(), 500);
     }
     onFileRemoved() {
         this.updateStatus();
