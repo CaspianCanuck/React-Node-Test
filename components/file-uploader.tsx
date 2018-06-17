@@ -63,7 +63,7 @@ export default class FileUploader extends React.Component<FileUploaderProps, Fil
     }
 
     onFileAdded() {
-        setTimeout(() => this.updateStatus(), 500);
+        setTimeout(() => this.updateStatus(), 500); // Dropzone needs extra time to update its file queue after fils are dragged-and-dropped
     }
     onFileRemoved() {
         this.updateStatus();

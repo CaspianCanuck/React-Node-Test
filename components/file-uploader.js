@@ -66,7 +66,7 @@ var FileUploader = /** @class */ (function (_super) {
     };
     FileUploader.prototype.onFileAdded = function () {
         var _this = this;
-        timers_1.setTimeout(function () { return _this.updateStatus(); }, 500);
+        timers_1.setTimeout(function () { return _this.updateStatus(); }, 500); // Dropzone needs extra time to update its file queue after fils are dragged-and-dropped
     };
     FileUploader.prototype.onFileRemoved = function () {
         this.updateStatus();
